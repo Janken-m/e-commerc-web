@@ -2,7 +2,7 @@ import { ChangeEvent, useState } from "react";
 import styled from "styled-components";
 import { mobile } from "../responsive";
 import { useDispatch, useSelector } from "react-redux";
-import { loginSuccess } from "../store/userRedux";
+import { SetToken } from "../store/Token";
 import Background from "./Login/Background";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -91,7 +91,7 @@ const Login = () => {
         email: "",
         password: "",
       });
-      navigate("/");
+      window.location.href = "/";
     } catch (error: any) {
       error.response.data.message && console.log(error.response.data.message);
     }

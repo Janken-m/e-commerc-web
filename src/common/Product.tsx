@@ -3,6 +3,30 @@ import { AiOutlineSearch, AiOutlineShoppingCart } from "react-icons/ai";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 
+const Product = ({ item }: any) => {
+  return (
+    <Container>
+      <Circle />
+      <Image src={item.image} />
+      <Info>
+        <Icon>
+          <AiOutlineShoppingCart />
+        </Icon>
+        <Icon>
+          <Link to={`/products/${item._id}`}>
+            <AiOutlineSearch />
+          </Link>
+        </Icon>
+        <Icon>
+          <MdFavoriteBorder />
+        </Icon>
+      </Info>
+    </Container>
+  );
+};
+
+export default Product;
+
 const Info = styled.div`
   opacity: 0;
   width: 100%;
@@ -63,27 +87,3 @@ const Icon = styled.div`
     transform: scale(1.1);
   }
 `;
-
-const Product = ({ item }: any) => {
-  return (
-    <Container>
-      <Circle />
-      <Image src={item.img} />
-      <Info>
-        <Icon>
-          <AiOutlineShoppingCart />
-        </Icon>
-        <Icon>
-          <Link to={`/product/${item._id}`}>
-            <AiOutlineSearch />
-          </Link>
-        </Icon>
-        <Icon>
-          <MdFavoriteBorder />
-        </Icon>
-      </Info>
-    </Container>
-  );
-};
-
-export default Product;

@@ -5,10 +5,10 @@ import { mobile } from "../responsive";
 const CategoryItem = ({ item }: any) => {
   return (
     <Container>
-      <Link to={`/products/${item.cat}`}>
-        <Image src={item.img} />
+      <Link to={`/products/${item.name}`}>
+        <Image src={item.image} />
         <Info>
-          <Title>{item.title}</Title>
+          <Title>{item.name}</Title>
           <Button>SHOP NOW</Button>
         </Info>
       </Link>

@@ -9,27 +9,17 @@ import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { addProduct } from "../store/cartRedux";
 import { useDispatch } from "react-redux";
-import axios from "axios";
+import { useGetProductsQuery, useGetSingelProductQuery } from "../store/Api";
 
 const Product = () => {
   const params = useParams();
-  const [product, setProduct] = useState<any>({});
+  const { data: product } = useGetSingelProductQuery(params.id);
   const [quantity, setQuantity] = useState(1);
   const [color, setColor] = useState("");
   const [size, setSize] = useState("");
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    const getProduct = async () => {
-      try {
-        const { data } = await axios.get(
-          "http://localhost:5000/api/products/find/" + params.id
-        );
-        setProduct(data);
-      } catch {}
-    };
-    getProduct();
-  }, [params.id]);
+  useEffect(() => {}, [params.id]);
 
   const handleQuantity = (type: any) => {
     if (type === "dec") {
@@ -42,24 +32,24 @@ const Product = () => {
   const handleClick = () => {
     dispatch(addProduct({ ...product, quantity, color, size }));
   };
-
   console.log(product);
+  console.log(params.id);
   return (
     <Container>
       <Navbar />
       <Announcement />
       <Wrapper>
         <ImgContainer>
-          <Image src={product.img} />
+          <Image src={product.image} />
         </ImgContainer>
         <InfoContainer>
-          <Title>{product.title}</Title>
-          <Desc>{product.desc}</Desc>
+          <Title>{product.name}</Title>
+          <Desc>{product.description}</Desc>
           <Price>$ {product.price}</Price>
           <FilterContainer>
             <Filter>
               <FilterTitle>Color</FilterTitle>
-              {product.color?.map((c: any) => (
+              {product?.color.map((c: any) => (
                 <FilterColor color={c} key={c} onClick={() => setColor(c)} />
               ))}
             </Filter>

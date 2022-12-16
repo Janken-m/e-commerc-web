@@ -5,6 +5,7 @@ export const Api = createApi({
     baseUrl: "http://localhost:5000/api",
     prepareHeaders: (headers, { getState }) => {
       const token = getState().token;
+      console.log("RTK TOKEN", token);
 
       // If we have a token set in state, let's assume that we should be passing it.
       if (token) {
@@ -22,7 +23,9 @@ export const Api = createApi({
       providesTags: ["Products"],
     }),
     GetSingelProduct: builder.query({
-      query: (id) => `/products/${id}`,
+      query: (id) => ({
+        url: `/products/${id}`,
+      }),
       invalidatesTags: ["Products"],
     }),
     RemoveProduct: builder.mutation({
@@ -105,4 +108,10 @@ export const Api = createApi({
   }),
 });
 
-export const { useSigninUpUserMutation, useSignInMutation } = Api;
+export const {
+  useSigninUpUserMutation,
+  useSignInMutation,
+  useGetProductsQuery,
+  useGetSingelProductQuery,
+  useGetCategoriesQuery,
+} = Api;
