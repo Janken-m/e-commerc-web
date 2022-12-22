@@ -58,7 +58,6 @@ const Products = ({ category, filters, sort }: any) => {
       );
     }
   }, [sort]);
-  console.log(filteredProducts);
   return (
     <Container>
       {category

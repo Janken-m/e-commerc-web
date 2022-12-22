@@ -4,7 +4,7 @@ import { Routes, Route } from "react-router-dom";
 import Home from "./components/Home";
 import Cart from "./components/Cart";
 import ProductList from "./components/ProductList";
-import Product from "./components/Product";
+import Product from "./common/Product";
 import Success from "./common/Success";
 import ForgetPassword from "./common/ForgetPassword";
 import Activation from "./common/Activation";
@@ -13,8 +13,8 @@ function App() {
   return (
     <div>
       <Routes>
-        <Route path="//products/:category" element={<ProductList />} />
         <Route path="/products/:id" element={<Product />} />
+        <Route path="//products/:category" element={<ProductList />} />
         <Route path="/activate/:id" element={<Activation />} />
         <Route path="/products/" element={<ProductList />} />
         <Route path="/register" element={<Register />} />

@@ -2,6 +2,7 @@ import styled from "styled-components";
 import { mobile } from "../responsive";
 import CategoryItem from "./CategoryItem";
 import { useGetCategoriesQuery } from "../store/Api";
+import { categories } from "../data";
 
 const Container = styled.div`
   display: flex;
@@ -11,10 +12,10 @@ const Container = styled.div`
 `;
 
 const Categories = () => {
-  const { data: categories } = useGetCategoriesQuery("Categories");
+  // const { data: categories } = useGetCategoriesQuery("Categories");
   return (
     <Container>
-      {categories?.map((item: any) => (
+      {categories.map((item: any) => (
         <CategoryItem item={item} key={item.id} />
       ))}
     </Container>

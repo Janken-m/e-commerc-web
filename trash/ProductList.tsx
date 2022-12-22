@@ -1,13 +1,12 @@
-import { useState, ChangeEvent } from "react";
 import styled from "styled-components";
-import Announcement from "../common/Announcement";
-import Footer from "../common/Footer";
-import Newsletter from "../common/Newsletter";
-import { mobile } from "../responsive";
-import { useGetProductsQuery } from "../store/Api";
 import Navbar from "./Navbar";
-import Product from "./Product";
-import { useLocation } from "react-router-dom";
+import Announcement from "../common/Announcement";
+import Products from "../common/Product";
+import Newsletter from "../common/Newsletter";
+import Footer from "../common/Footer";
+import { mobile } from "../responsive";
+import { useLocation } from "react-router";
+import { ChangeEvent, useState } from "react";
 
 const ProductList = () => {
   const location = useLocation();
@@ -24,7 +23,7 @@ const ProductList = () => {
   };
 
   return (
-    <div>
+    <Container>
       <Navbar />
       <Announcement />
       <Title>{category}</Title>
@@ -58,14 +57,16 @@ const ProductList = () => {
           </Select>
         </Filter>
       </FilterContainer>
-      <Product />
+      <Products category={category} filters={filters} sort={sort} />
       <Newsletter />
       <Footer />
-    </div>
+    </Container>
   );
 };
 
 export default ProductList;
+
+const Container = styled.div``;
 
 const Title = styled.h1`
   margin: 20px;

@@ -1,5 +1,4 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-
 export const Api = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: "http://localhost:5000/api",
@@ -23,9 +22,7 @@ export const Api = createApi({
       providesTags: ["Products"],
     }),
     GetSingelProduct: builder.query({
-      query: (id) => ({
-        url: `/products/${id}`,
-      }),
+      query: (id) => `/products/${id}`,
       invalidatesTags: ["Products"],
     }),
     RemoveProduct: builder.mutation({

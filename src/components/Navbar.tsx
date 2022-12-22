@@ -13,7 +13,7 @@ const Navbar = () => {
     localStorage.removeItem("token");
     window.location.href = "/";
   };
-
+  console.log(user);
   console.log(user.currentUser);
   return (
     <Container>
@@ -29,7 +29,7 @@ const Navbar = () => {
           <Logo onClick={() => navigate("/")}>LOGO.</Logo>
         </Center>
         <Right>
-          {user?.currentUser ? (
+          {user.currentUser ? (
             <p className="signin">{user.currentUser.firstname}</p>
           ) : (
             <button className="signin" onClick={() => navigate("/login")}>
@@ -43,7 +43,9 @@ const Navbar = () => {
           ) : (
             <MenuItem onClick={() => navigate("/register")}>REGISTER</MenuItem>
           )}
-          <MenuItem onClick={() => handleLogout()}> Logout </MenuItem>
+          {user.currentUser && (
+            <MenuItem onClick={() => handleLogout()}> Logout </MenuItem>
+          )}
           <Link to="/cart">
             <MenuItem onClick={() => navigate("/cart")}>
               <AiOutlineShoppingCart size={25} color={"black"} />
