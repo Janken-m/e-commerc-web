@@ -26,7 +26,6 @@ const ProductList = () => {
   return (
     <div>
       <Navbar />
-      <Announcement />
       <Title>{category}</Title>
       <FilterContainer>
         <Filter>

@@ -13,8 +13,6 @@ const Navbar = () => {
     localStorage.removeItem("token");
     window.location.href = "/";
   };
-  console.log(user);
-  console.log(user.currentUser);
   return (
     <Container>
       <Wrapper>
@@ -61,7 +59,7 @@ const Navbar = () => {
 export default Navbar;
 
 const Container = styled.div`
-  ${mobile({ height: "50px" })}
+  ${mobile({ height: "50px", width: "auto" })}
 `;
 
 const Wrapper = styled.div`

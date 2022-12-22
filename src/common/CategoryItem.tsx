@@ -23,6 +23,7 @@ const Container = styled.div`
   margin: 3px;
   height: 70vh;
   position: relative;
+  ${mobile({ padding: "20px" })}
 `;
 
 const Image = styled.img`
