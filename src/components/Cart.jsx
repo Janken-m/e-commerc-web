@@ -11,8 +11,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-toastify";
 
-const KEY =
-  "pk_test_51M7SHIF0yXjTBNV8MYaEl3bUfu8sL5Eo239B0LtkR8VM68ycBoTzWCyMHfyUQlXb0757FLtxrPiV7QdCgpPMWmXq00tVEbMmRI";
+const KEY = ""; //stripe key
 
 const Cart = () => {
   const navigate = useNavigate();
@@ -112,7 +111,7 @@ const Cart = () => {
 
             <StripeCheckout
               name="Logo Shop"
-              image="https://avatars.githubusercontent.com/u/1486366?v=4"
+              image="https://res.cloudinary.com/dylxgsias/image/upload/v1672186424/shop_doczgl.png"
               billingAddress={true}
               shippingAddress={true}
               bitcoin={true}
