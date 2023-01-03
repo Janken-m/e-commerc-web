@@ -6,25 +6,26 @@ import { Link } from "react-router-dom";
 import { AiOutlineSearch, AiOutlineShoppingCart } from "react-icons/ai";
 import { MdFavoriteBorder } from "react-icons/md";
 import { popularProducts } from "../data";
+import { useDispatch } from "react-redux";
+import { addProduct } from "../store/Cart";
+import { Iproduct } from "../types/productType";
 
 const Products = () => {
   const { data: products } = useGetProductsQuery("products");
+  const dispatch = useDispatch();
 
   return (
     <Wrapper>
-      {popularProducts.map((product: any) => (
+      {popularProducts.map((product: Iproduct) => (
         <>
-          <Container key={product._id}>
+          <Container key={product.id}>
             <Circle />
             <Image src={product.img} />
             <Info>
               <Icon>
-                <AiOutlineShoppingCart />
-              </Icon>
-              <Icon>
-                <Link to={`/products/${product._id}`}>
-                  <AiOutlineSearch />
-                </Link>
+                <AiOutlineShoppingCart
+                  onClick={() => dispatch(addProduct(product))}
+                />
               </Icon>
               <Icon>
                 <MdFavoriteBorder />

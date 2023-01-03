@@ -13,7 +13,6 @@ function App() {
   return (
     <div>
       <Routes>
-        <Route path="/products/:id" element={<Product />} />
         <Route path="//products/:category" element={<ProductList />} />
         <Route path="/activate/:id" element={<Activation />} />
         <Route path="/products/" element={<ProductList />} />

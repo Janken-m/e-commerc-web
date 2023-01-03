@@ -1,4 +1,5 @@
-import { AiOutlineSearch, AiOutlineShoppingCart } from "react-icons/ai";
+import { AiOutlineSearch } from "react-icons/ai";
+import { BsHandbag } from "react-icons/bs";
 import styled from "styled-components";
 import { mobile } from "../responsive";
 import { useSelector } from "react-redux";
@@ -7,12 +8,17 @@ import { useNavigate } from "react-router-dom";
 
 const Navbar = () => {
   const navigate = useNavigate();
-  const quantity = useSelector((state: any) => state.entities.cart.quantity);
+  const cart = useSelector((state: any) => state.entities.cart);
   const user = useSelector((state: any) => state.entities.user);
   const handleLogout = async () => {
     localStorage.removeItem("token");
     window.location.href = "/";
   };
+  const cartQuantity = cart.reduce(
+    //@ts-ignore
+    (totalQuantity, cartItem) => totalQuantity + cartItem.quantity,
+    0
+  );
   return (
     <Container>
       <Wrapper>
@@ -46,8 +52,8 @@ const Navbar = () => {
           )}
           <Link to="/cart">
             <MenuItem onClick={() => navigate("/cart")}>
-              <AiOutlineShoppingCart size={25} color={"black"} />
-              <span> {quantity >= 1 ? <> {quantity} </> : <></>} </span>
+              <BsHandbag size={25} color={"black"} />
+              <Badg> {cartQuantity >= 1 ? <> {cartQuantity} </> : <></>}</Badg>
             </MenuItem>
           </Link>
         </Right>
@@ -81,6 +87,17 @@ const Language = styled.span`
   font-size: 14px;
   cursor: pointer;
   ${mobile({ display: "none" })}
+`;
+
+const Badg = styled.div`
+  position: absolute;
+  top: -12px;
+  right: -9px;
+  width: 70%;
+  text-align: center;
+  background-color: red;
+  color: white;
+  border-radius: 50%;
 `;
 
 const SearchContainer = styled.div`
@@ -129,6 +146,7 @@ const Right = styled.div`
 `;
 
 const MenuItem = styled.div`
+  position: relative;
   font-size: 14px;
   cursor: pointer;
   margin: 0.7rem;

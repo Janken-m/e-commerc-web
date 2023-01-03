@@ -7,7 +7,7 @@ import Newsletter from "../common/Newsletter";
 import { mobile } from "../responsive";
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { addProduct } from "../store/cartRedux";
+import { addProduct } from "../store/Cart";
 import { useDispatch } from "react-redux";
 import { useGetProductsQuery, useGetSingelProductQuery } from "../store/Api";
 
@@ -30,7 +30,7 @@ const Product = () => {
   };
 
   const handleClick = () => {
-    dispatch(addProduct({ ...product, quantity, color, size }));
+    dispatch(addProduct({ ...product }));
   };
   console.log(product);
   console.log(params.id);
@@ -39,7 +39,7 @@ const Product = () => {
       <Navbar />
       <Wrapper>
         <ImgContainer>
-          <Image src={product?.image} />
+          <Image src={product?.img} />
         </ImgContainer>
         <InfoContainer>
           <Title>{product?.name}</Title>

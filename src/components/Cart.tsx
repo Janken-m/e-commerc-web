@@ -1,49 +1,25 @@
-import { MdAddCircle, MdRemoveCircle } from "react-icons/md";
 import { useSelector } from "react-redux";
+import { IoMdRemoveCircle, IoIosAddCircle } from "react-icons/io";
+import { useDispatch } from "react-redux";
+import { addProduct, removeProduct, deleteProduct } from "../store/Cart";
 import styled from "styled-components";
-import Announcement from "../common/Announcement";
-import Footer from "../common/Footer";
-import Navbar from "../components/Navbar";
 import { mobile } from "../responsive";
-import StripeCheckout from "react-stripe-checkout";
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import axios from "axios";
-import { toast } from "react-toastify";
-
-const KEY = ""; //stripe key
-
+import Footer from "../common/Footer";
+import { MdAddCircle, MdRemoveCircle } from "react-icons/md";
+import { Iproduct } from "../types/productType";
+import Navbar from "./Navbar";
+import Announcement from "../common/Announcement";
 const Cart = () => {
-  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const cart = useSelector((state: any) => state.entities.cart);
+  const totalPrice = cart
+    .map((item: any) => item.price * item.quantity)
+    .reduce(
+      //@ts-ignore
+      (totalPrice, totalQuantity) => totalPrice + totalQuantity,
+      0
+    );
 
-  const cart = useSelector((state) => state.entities.cart);
-  const [stripeToken, setStripeToken] = useState(null);
-
-  const onToken = (token) => {
-    setStripeToken(token);
-  };
-
-  useEffect(() => {
-    const makeRequest = async () => {
-      try {
-        const res = await axios.post(
-          "http://localhost:5000/api/checkout/payment",
-          {
-            tokenId: stripeToken.id,
-            amount: 500,
-          }
-        );
-        toast.success("The payment request successfully");
-        navigate("/success", {
-          stripeData: res.data,
-          products: cart,
-        });
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    stripeToken && makeRequest();
-  }, [stripeToken, cart.total]);
   return (
     <Container>
       <Announcement />
@@ -59,32 +35,34 @@ const Cart = () => {
         </Top>
         <Bottom>
           <Info>
-            {cart.products.map((product) => (
+            {cart.map((product: Iproduct) => (
               <Product>
                 <ProductDetail>
                   <Image src={product.img} />
                   <Details>
-                    <ProductName>
-                      <b>Product:</b> {product.title}
-                    </ProductName>
                     <ProductId>
-                      <b>ID:</b> {product._id}
+                      <b>ID:</b> {product.id}
                     </ProductId>
-                    <ProductColor color={product.color} />
-                    <ProductSize>
-                      <b>Size:</b> {product.size}
-                    </ProductSize>
                   </Details>
                 </ProductDetail>
                 <PriceDetail>
                   <ProductAmountContainer>
-                    <MdAddCircle />
+                    <MdRemoveCircle
+                      size={20}
+                      onClick={() => dispatch(removeProduct(product))}
+                    />
                     <ProductAmount>{product.quantity}</ProductAmount>
-                    <MdRemoveCircle />
+                    <MdAddCircle
+                      size={20}
+                      onClick={() => dispatch(addProduct(product))}
+                    />
+                    <RemoveQuqntity>
+                      <Button onClick={() => dispatch(deleteProduct(product))}>
+                        {" "}
+                        Remove{" "}
+                      </Button>
+                    </RemoveQuqntity>
                   </ProductAmountContainer>
-                  <ProductPrice>
-                    $ {product.price * product.quantity}
-                  </ProductPrice>
                 </PriceDetail>
               </Product>
             ))}
@@ -94,34 +72,20 @@ const Cart = () => {
             <SummaryTitle>ORDER SUMMARY</SummaryTitle>
             <>
               <SummaryItemText>Subtotal</SummaryItemText>
-              <SummaryItemPrice>$ {cart.total}</SummaryItemPrice>
+              <SummaryItemPrice>SEK {totalPrice}</SummaryItemPrice>
             </>
             <>
               <SummaryItemText>Estimated Shipping</SummaryItemText>
-              <SummaryItemPrice>$ 5.90</SummaryItemPrice>
+              <SummaryItemPrice>SEK 50.90</SummaryItemPrice>
             </>
             <>
               <SummaryItemText>Shipping Discount</SummaryItemText>
-              <SummaryItemPrice>$ -5.90</SummaryItemPrice>
+              <SummaryItemPrice>SEK -50.90</SummaryItemPrice>
             </>
-            <SummaryItem classStyle="total">
+            <SummaryItem>
               <SummaryItemText>Total</SummaryItemText>
-              <SummaryItemPrice>$ {cart.total}</SummaryItemPrice>
+              <SummaryItemPrice>SEK {cart.total}</SummaryItemPrice>
             </SummaryItem>
-
-            <StripeCheckout
-              name="Logo Shop"
-              image="https://res.cloudinary.com/dylxgsias/image/upload/v1672186424/shop_doczgl.png"
-              billingAddress={true}
-              shippingAddress={true}
-              bitcoin={true}
-              description={`Your total is $${cart.total}`}
-              amount={cart.total * 100}
-              token={onToken}
-              stripeKey={KEY}
-            >
-              <Button>CHECKOUT NOW</Button>
-            </StripeCheckout>
           </Summary>
         </Bottom>
       </Wrapper>
@@ -155,11 +119,6 @@ const TopButton = styled.button`
   padding: 10px;
   font-weight: 600;
   cursor: pointer;
-
-  border: ${(props) => props.classStyle === "filled" && "none"};
-  background-color: ${(props) =>
-    props.classStyle === "filled" ? "black" : "transparent"};
-  color: ${(props) => props.classStyle === "filled" && "white"};
 `;
 
 const TopTexts = styled.div`
@@ -230,8 +189,11 @@ const PriceDetail = styled.div`
 
 const ProductAmountContainer = styled.div`
   display: flex;
+  padding: 0.5rem;
+  justify-content: center;
   align-items: center;
   margin-bottom: 20px;
+  cursor: pointer;
 `;
 
 const ProductAmount = styled.div`
@@ -268,19 +230,18 @@ const SummaryItem = styled.div`
   margin: 30px 0px;
   display: flex;
   justify-content: space-between;
-
-  font-weight: ${(props) => props.classStyle === "total" && "500"};
-  font-size: ${(props) => props.classStyle === "total" && "24px"};
 `;
 
 const SummaryItemText = styled.span``;
 
 const SummaryItemPrice = styled.span``;
 
+const RemoveQuqntity = styled.div`
+  display: flex;
+  padding: 1rem;
+`;
+
 const Button = styled.button`
-  width: 100%;
-  padding: 10px;
   background-color: black;
   color: white;
-  font-weight: 600;
 `;
